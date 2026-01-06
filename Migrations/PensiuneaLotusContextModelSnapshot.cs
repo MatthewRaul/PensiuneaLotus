@@ -31,6 +31,7 @@ namespace PensiuneaLotus.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
 
                     b.Property<string>("Email")
+                        .IsRequired()
                         .HasMaxLength(120)
                         .HasColumnType("nvarchar(120)");
 
@@ -45,6 +46,7 @@ namespace PensiuneaLotus.Migrations
                         .HasColumnType("nvarchar(60)");
 
                     b.Property<string>("Phone")
+                        .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
@@ -162,7 +164,7 @@ namespace PensiuneaLotus.Migrations
                         .HasColumnType("nvarchar(10)");
 
                     b.Property<decimal>("PricePerNight")
-                        .HasColumnType("decimal(10,2)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("ID");
 

@@ -14,14 +14,19 @@ namespace PensiuneaLotus.Models
         public int GuestID { get; set; }
         public Guest? Guest { get; set; }
 
+        [Required]
         [DataType(DataType.Date)]
         public DateTime CheckInDate { get; set; }
-
+        [Required]
         [DataType(DataType.Date)]
         public DateTime CheckOutDate { get; set; }
 
+        [Required]
         [StringLength(30)]
-        public string Status { get; set; } = "New"; // New/Confirmed/Cancelled/CheckedIn/CheckedOut
+        [RegularExpression(@"^(New|Confirmed|Cancelled|CheckedIn|CheckedOut)$",
+        ErrorMessage = "Status invalid. Valori permise: New, Confirmed, Cancelled, CheckedIn, CheckedOut")]
+        public string Status { get; set; } = "New";
+
 
         // Navigation
         public ICollection<Payment>? Payments { get; set; }
