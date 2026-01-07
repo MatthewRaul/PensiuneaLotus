@@ -16,13 +16,16 @@ namespace PensiuneaLotus.Pages.Reservations
             _context = context;
         }
 
-        public IActionResult OnGet()
+        [BindProperty]
+        public Reservation Reservation { get; set; } = default!;
+
+        private void PopulateDropDowns(int? selectedGuestId = null, int? selectedRoomId = null)
         {
             var guestList = _context.Guest
                 .Select(g => new
                 {
                     g.ID,
-                    Display = (g.FirstName + " " + g.LastName) // adaptează la ce proprietăți ai în Guest
+                    Display = g.FirstName + " " + g.LastName
                 })
                 .ToList();
 
@@ -30,44 +33,57 @@ namespace PensiuneaLotus.Pages.Reservations
                 .Select(r => new
                 {
                     r.ID,
-                    Display = $"{r.Number} | cap {r.Capacity} | {r.PricePerNight} lei/noapte" + (r.IsActive ? "" : " (inactiv)")
+                    Display = $"{r.Number} | cap {r.Capacity} | {r.PricePerNight} lei/noapte" +
+                              (r.IsActive ? "" : " (inactiv)")
                 })
                 .ToList();
 
-            ViewData["GuestID"] = new SelectList(guestList, "ID", "Display");
-            ViewData["RoomID"] = new SelectList(roomList, "ID", "Display");
+            ViewData["GuestID"] = new SelectList(guestList, "ID", "Display", selectedGuestId);
+            ViewData["RoomID"] = new SelectList(roomList, "ID", "Display", selectedRoomId);
+        }
 
+        public async Task<IActionResult> OnGetAsync(int? id)
+        {
+            if (id == null) return NotFound();
+
+            Reservation = await _context.Reservation
+                .AsNoTracking()
+                .FirstOrDefaultAsync(r => r.ID == id);
+
+            if (Reservation == null) return NotFound();
+
+            PopulateDropDowns(Reservation.GuestID, Reservation.RoomID);
             return Page();
         }
 
-        [BindProperty]
-        public Reservation Reservation { get; set; } = default!;
-
         public async Task<IActionResult> OnPostAsync()
         {
+            // exemplu de validare extra (opțional)
+            if (Reservation.CheckOutDate < Reservation.CheckInDate)
+            {
+                ModelState.AddModelError("Reservation.CheckOutDate",
+                    "Check-out trebuie să fie după check-in.");
+            }
+
             if (!ModelState.IsValid)
             {
-                // reumpli dropdown-urile și la invalid (altfel îți crapă pagina)
-                var guestList = _context.Guest
-                    .Select(g => new { g.ID, Display = (g.FirstName + " " + g.LastName) })
-                    .ToList();
-
-                var roomList = _context.Room
-                    .Select(r => new
-                    {
-                        r.ID,
-                        Display = $"{r.Number} | cap {r.Capacity} | {r.PricePerNight} lei/noapte" + (r.IsActive ? "" : " (inactiv)")
-                    })
-                    .ToList();
-
-                ViewData["GuestID"] = new SelectList(guestList, "ID", "Display");
-                ViewData["RoomID"] = new SelectList(roomList, "ID", "Display");
-
+                PopulateDropDowns(Reservation.GuestID, Reservation.RoomID);
                 return Page();
             }
 
-            _context.Reservation.Add(Reservation);
-            await _context.SaveChangesAsync();
+            // Asta e partea crucială: EDIT = update, nu Add
+            _context.Attach(Reservation).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                var exists = await _context.Reservation.AnyAsync(r => r.ID == Reservation.ID);
+                if (!exists) return NotFound();
+                throw;
+            }
 
             return RedirectToPage("./Index");
         }

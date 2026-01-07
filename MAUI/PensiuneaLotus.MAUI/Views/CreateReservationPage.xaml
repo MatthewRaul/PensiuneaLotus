@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PensiuneaLotus.MAUI.Views.CreateReservationPage"
+             Title="Finalizează Rezervarea">
+    <VerticalStackLayout Padding="20" Spacing="15">
+        <Label x:Name="LabelRoomInfo" FontSize="18" FontAttributes="Bold" />
+
+        <Entry x:Name="EntryName" Placeholder="Numele tău complet" />
+        <Entry x:Name="EntryPhone" Placeholder="Număr de telefon" Keyboard="Telephone" />
+
+        <Label Text="Data Sosirii:" />
+        <DatePicker x:Name="DateStart" />
+
+        <Label Text="Data Plecării:" />
+        <DatePicker x:Name="DateEnd" />
+
+        <Button Text="Confirmă Rezervarea" Clicked="OnConfirmClicked" BackgroundColor="DarkGreen" />
+    </VerticalStackLayout>
+</ContentPage>
