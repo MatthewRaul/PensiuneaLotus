@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using PensiuneaLotus.Data;
@@ -12,9 +8,9 @@ namespace PensiuneaLotus.Pages.Reservations
 {
     public class DeleteModel : PageModel
     {
-        private readonly PensiuneaLotus.Data.PensiuneaLotusContext _context;
+        private readonly PensiuneaLotusContext _context;
 
-        public DeleteModel(PensiuneaLotus.Data.PensiuneaLotusContext context)
+        public DeleteModel(PensiuneaLotusContext context)
         {
             _context = context;
         }
@@ -24,40 +20,31 @@ namespace PensiuneaLotus.Pages.Reservations
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
-            var reservation = await _context.Reservation.FirstOrDefaultAsync(m => m.ID == id);
+            var reservation = await _context.Reservation.AsNoTracking().FirstOrDefaultAsync(m => m.ID == id);
+            if (reservation == null) return NotFound();
 
-            if (reservation == null)
-            {
-                return NotFound();
-            }
-            else
-            {
-                Reservation = reservation;
-            }
+            Reservation = reservation;
             return Page();
         }
 
         public async Task<IActionResult> OnPostAsync(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
-            var reservation = await _context.Reservation.FindAsync(id);
-            if (reservation != null)
-            {
-                Reservation = reservation;
-                _context.Reservation.Remove(Reservation);
-                await _context.SaveChangesAsync();
-            }
+            var reservation = await _context.Reservation.FindAsync(id.Value);
+            if (reservation == null) return NotFound();
+
+            var room = await _context.Room.FindAsync(reservation.RoomID);
+            if (room != null) room.IsOccupied = false;
+
+            _context.Reservation.Remove(reservation);
+            await _context.SaveChangesAsync();
 
             return RedirectToPage("./Index");
         }
+
+
     }
 }

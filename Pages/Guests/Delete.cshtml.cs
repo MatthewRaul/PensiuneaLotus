@@ -44,20 +44,30 @@ namespace PensiuneaLotus.Pages.Guests
 
         public async Task<IActionResult> OnPostAsync(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
-            var guest = await _context.Guest.FindAsync(id);
-            if (guest != null)
-            {
-                Guest = guest;
-                _context.Guest.Remove(Guest);
-                await _context.SaveChangesAsync();
-            }
+            var guest = await _context.Guest.FindAsync(id.Value);
+            if (guest == null) return NotFound();
+
+            var reservations = await _context.Reservation
+                .Where(r => r.GuestID == id.Value)
+                .ToListAsync();
+
+            var roomIds = reservations.Select(r => r.RoomID).Distinct().ToList();
+            var rooms = await _context.Room.Where(r => roomIds.Contains(r.ID)).ToListAsync();
+
+            foreach (var room in rooms)
+                room.IsOccupied = false;
+
+            if (reservations.Count > 0)
+                _context.Reservation.RemoveRange(reservations);
+
+            _context.Guest.Remove(guest);
+            await _context.SaveChangesAsync();
 
             return RedirectToPage("./Index");
         }
+
+
     }
 }

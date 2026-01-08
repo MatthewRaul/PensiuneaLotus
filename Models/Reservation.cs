@@ -21,11 +21,7 @@ namespace PensiuneaLotus.Models
         [DataType(DataType.Date)]
         public DateTime CheckOutDate { get; set; }
 
-        [Required]
-        [StringLength(30)]
-        [RegularExpression(@"^(New|Confirmed|Cancelled|CheckedIn|CheckedOut)$",
-        ErrorMessage = "Status invalid. Valori permise: New, Confirmed, Cancelled, CheckedIn, CheckedOut")]
-        public string Status { get; set; } = "New";
+       
 
 
         // Navigation

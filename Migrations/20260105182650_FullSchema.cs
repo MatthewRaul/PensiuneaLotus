@@ -36,7 +36,7 @@ namespace PensiuneaLotus.Migrations
                     Number = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
                     Capacity = table.Column<int>(type: "int", nullable: false),
                     PricePerNight = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false)
+                    IsOccupied = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -51,7 +51,7 @@ namespace PensiuneaLotus.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(80)", maxLength: 80, nullable: false),
                     Price = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false)
+                    IsOccupied = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {

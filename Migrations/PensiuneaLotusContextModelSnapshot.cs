@@ -104,11 +104,6 @@ namespace PensiuneaLotus.Migrations
                     b.Property<int>("RoomID")
                         .HasColumnType("int");
 
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
-
                     b.HasKey("ID");
 
                     b.HasIndex("GuestID");
@@ -155,7 +150,7 @@ namespace PensiuneaLotus.Migrations
                     b.Property<int>("Capacity")
                         .HasColumnType("int");
 
-                    b.Property<bool>("IsActive")
+                    b.Property<bool>("IsOccupied")
                         .HasColumnType("bit");
 
                     b.Property<string>("Number")
@@ -179,7 +174,7 @@ namespace PensiuneaLotus.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
 
-                    b.Property<bool>("IsActive")
+                    b.Property<bool>("IsOccupied")
                         .HasColumnType("bit");
 
                     b.Property<string>("Name")

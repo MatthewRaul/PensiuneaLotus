@@ -16,60 +16,65 @@ namespace PensiuneaLotus.Pages.Reservations
             _context = context;
         }
 
-        public IActionResult OnGet()
-        {
-            var guestList = _context.Guest
-                .Select(g => new
-                {
-                    g.ID,
-                    Display = (g.FirstName + " " + g.LastName) // adaptează la ce proprietăți ai în Guest
-                })
-                .ToList();
-
-            var roomList = _context.Room
-                .Select(r => new
-                {
-                    r.ID,
-                    Display = $"{r.Number} | cap {r.Capacity} | {r.PricePerNight} lei/noapte" + (r.IsActive ? "" : " (inactiv)")
-                })
-                .ToList();
-
-            ViewData["GuestID"] = new SelectList(guestList, "ID", "Display");
-            ViewData["RoomID"] = new SelectList(roomList, "ID", "Display");
-
-            return Page();
-        }
-
         [BindProperty]
         public Reservation Reservation { get; set; } = default!;
+
+        private void PopulateDropDowns(int? selectedGuestId = null, int? selectedRoomId = null)
+        {
+            var guestList = _context.Guest
+                .AsNoTracking()
+                .Select(g => new { g.ID, Display = g.FirstName + " " + g.LastName })
+                .ToList();
+
+            // Doar camere LIBERE (IsOccupied=false)
+            var roomList = _context.Room
+                .Where(r => !r.IsOccupied)
+                .Select(r => new
+    {
+        r.ID,
+        Display = $"{r.Number} | cap {r.Capacity} | {r.PricePerNight} lei/noapte"
+    })
+    .ToList();
+
+
+            ViewData["GuestID"] = new SelectList(guestList, "ID", "Display", selectedGuestId);
+            ViewData["RoomID"] = new SelectList(roomList, "ID", "Display", selectedRoomId);
+        }
+
+        public IActionResult OnGet()
+        {
+            PopulateDropDowns();
+            return Page();
+        }
 
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
             {
-                // reumpli dropdown-urile și la invalid (altfel îți crapă pagina)
-                var guestList = _context.Guest
-                    .Select(g => new { g.ID, Display = (g.FirstName + " " + g.LastName) })
-                    .ToList();
+                // reumpli dropdown-urile ca în codul tău existent
+                return Page();
+            }
 
-                var roomList = _context.Room
-                    .Select(r => new
-                    {
-                        r.ID,
-                        Display = $"{r.Number} | cap {r.Capacity} | {r.PricePerNight} lei/noapte" + (r.IsActive ? "" : " (inactiv)")
-                    })
-                    .ToList();
+            var room = await _context.Room.FirstOrDefaultAsync(r => r.ID == Reservation.RoomID);
+            if (room == null)
+            {
+                ModelState.AddModelError(string.Empty, "Camera invalidă.");
+                return Page();
+            }
 
-                ViewData["GuestID"] = new SelectList(guestList, "ID", "Display");
-                ViewData["RoomID"] = new SelectList(roomList, "ID", "Display");
-
+            if (room.IsOccupied)
+            {
+                ModelState.AddModelError(string.Empty, "Camera este deja ocupată.");
                 return Page();
             }
 
             _context.Reservation.Add(Reservation);
-            await _context.SaveChangesAsync();
+            room.IsOccupied = true;
 
+            await _context.SaveChangesAsync();
             return RedirectToPage("./Index");
+
         }
+
     }
 }

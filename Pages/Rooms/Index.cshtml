@@ -23,7 +23,7 @@
                 @Html.DisplayNameFor(model => model.Room[0].PricePerNight)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Room[0].IsActive)
+                @Html.DisplayNameFor(model => model.Room[0].IsOccupied)
             </th>
             <th></th>
         </tr>
@@ -41,7 +41,7 @@
                 @Html.DisplayFor(modelItem => item.PricePerNight)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.IsActive)
+                @Html.DisplayFor(modelItem => item.IsOccupied)
             </td>
             <td>
                 <a asp-page="./Edit" asp-route-id="@item.ID">Edit</a> |

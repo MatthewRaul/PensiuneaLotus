@@ -22,19 +22,19 @@ namespace PensiuneaLotus.Pages.Reservations
         private void PopulateDropDowns(int? selectedGuestId = null, int? selectedRoomId = null)
         {
             var guestList = _context.Guest
-                .Select(g => new
-                {
-                    g.ID,
-                    Display = g.FirstName + " " + g.LastName
-                })
+                .AsNoTracking()
+                .Select(g => new { g.ID, Display = g.FirstName + " " + g.LastName })
                 .ToList();
 
+            // camere libere + camera curent selectată (ca să apară în dropdown chiar dacă e ocupată)
             var roomList = _context.Room
+                .AsNoTracking()
+                .Where(r => !r.IsOccupied || r.ID == selectedRoomId)
                 .Select(r => new
                 {
                     r.ID,
                     Display = $"{r.Number} | cap {r.Capacity} | {r.PricePerNight} lei/noapte" +
-                              (r.IsActive ? "" : " (inactiv)")
+                              (r.IsOccupied ? " (ocupată)" : " (liberă)")
                 })
                 .ToList();
 
@@ -58,12 +58,8 @@ namespace PensiuneaLotus.Pages.Reservations
 
         public async Task<IActionResult> OnPostAsync()
         {
-            // exemplu de validare extra (opțional)
-            if (Reservation.CheckOutDate < Reservation.CheckInDate)
-            {
-                ModelState.AddModelError("Reservation.CheckOutDate",
-                    "Check-out trebuie să fie după check-in.");
-            }
+            if (Reservation.CheckOutDate <= Reservation.CheckInDate)
+                ModelState.AddModelError(nameof(Reservation.CheckOutDate), "Check-out trebuie să fie după check-in.");
 
             if (!ModelState.IsValid)
             {
@@ -71,19 +67,36 @@ namespace PensiuneaLotus.Pages.Reservations
                 return Page();
             }
 
-            // Asta e partea crucială: EDIT = update, nu Add
-            _context.Attach(Reservation).State = EntityState.Modified;
+            // rezervarea originală (ca să știm camera veche)
+            var existing = await _context.Reservation.AsNoTracking().FirstOrDefaultAsync(r => r.ID == Reservation.ID);
+            if (existing == null) return NotFound();
 
-            try
+            // dacă s-a schimbat camera
+            if (existing.RoomID != Reservation.RoomID)
             {
-                await _context.SaveChangesAsync();
+                var oldRoom = await _context.Room.FirstOrDefaultAsync(r => r.ID == existing.RoomID);
+                if (oldRoom != null) oldRoom.IsOccupied = false; // eliberează
+
+                var newRoom = await _context.Room.FirstOrDefaultAsync(r => r.ID == Reservation.RoomID);
+                if (newRoom == null)
+                {
+                    ModelState.AddModelError(nameof(Reservation.RoomID), "Camera selectată nu există.");
+                    PopulateDropDowns(Reservation.GuestID, Reservation.RoomID);
+                    return Page();
+                }
+
+                if (newRoom.IsOccupied)
+                {
+                    ModelState.AddModelError(nameof(Reservation.RoomID), "Camera selectată este deja ocupată.");
+                    PopulateDropDowns(Reservation.GuestID, Reservation.RoomID);
+                    return Page();
+                }
+
+                newRoom.IsOccupied = true; // ocupă noua cameră
             }
-            catch (DbUpdateConcurrencyException)
-            {
-                var exists = await _context.Reservation.AnyAsync(r => r.ID == Reservation.ID);
-                if (!exists) return NotFound();
-                throw;
-            }
+
+            _context.Attach(Reservation).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
 
             return RedirectToPage("./Index");
         }

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PensiuneaLotus.Client.Pages.GuestsPage"
+             Title="Oaspeți"
+             BackgroundColor="#F2F4F8">
+
+    <Grid RowDefinitions="Auto, Auto, *" Padding="15" RowSpacing="15">
+
+        <Label Grid.Row="0" 
+               Text="Gestiune Oaspeți" 
+               FontSize="26" 
+               FontAttributes="Bold" 
+               TextColor="#1F2937" 
+               HorizontalOptions="Center"/>
+
+        <Frame Grid.Row="1" 
+               BackgroundColor="White" 
+               BorderColor="#E5E7EB" 
+               CornerRadius="15" 
+               Padding="15"
+               HasShadow="True">
+
+            <VerticalStackLayout Spacing="12">
+                <Label Text="Adaugă Oaspete Nou" 
+                       TextColor="#4F46E5" 
+                       FontSize="16"
+                       FontAttributes="Bold"/>
+
+                <Grid ColumnDefinitions="*, *" ColumnSpacing="10">
+                    <Entry Grid.Column="0" x:Name="EntFirstName" Placeholder="Prenume" PlaceholderColor="#9CA3AF" TextColor="Black" BackgroundColor="#F3F4F6"/>
+                    <Entry Grid.Column="1" x:Name="EntLastName" Placeholder="Nume" PlaceholderColor="#9CA3AF" TextColor="Black" BackgroundColor="#F3F4F6"/>
+                </Grid>
+
+                <Grid ColumnDefinitions="*, *" ColumnSpacing="10">
+                    <Entry Grid.Column="0" x:Name="EntPhone" Placeholder="Telefon" Keyboard="Telephone" PlaceholderColor="#9CA3AF" TextColor="Black" BackgroundColor="#F3F4F6"/>
+                    <Entry Grid.Column="1" x:Name="EntEmail" Placeholder="Email" Keyboard="Email" PlaceholderColor="#9CA3AF" TextColor="Black" BackgroundColor="#F3F4F6"/>
+                </Grid>
+
+                <Button Text="Salvează Oaspete" 
+                        Clicked="OnAddGuestClicked" 
+                        BackgroundColor="#4F46E5" 
+                        TextColor="White" 
+                        FontAttributes="Bold"
+                        CornerRadius="8"
+                        HeightRequest="45"/>
+            </VerticalStackLayout>
+        </Frame>
+
+        <CollectionView Grid.Row="2" x:Name="ColGuests">
+            <CollectionView.EmptyView>
+                <Label Text="Nu există oaspeți. Adaugă unul!" 
+                       TextColor="Gray" 
+                       HorizontalOptions="Center" 
+                       VerticalOptions="Center"/>
+            </CollectionView.EmptyView>
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Frame Margin="0,5" Padding="12" BackgroundColor="White" BorderColor="#E5E7EB" CornerRadius="12" HasShadow="True">
+                        <Grid ColumnDefinitions="Auto, *">
+
+                            <Frame Grid.Column="0" HeightRequest="50" WidthRequest="50" CornerRadius="25" BackgroundColor="#E0E7FF" Padding="0" Margin="0,0,15,0" BorderColor="Transparent">
+                                <Label Text="👤" FontSize="24" TextColor="#4F46E5" HorizontalOptions="Center" VerticalOptions="Center"/>
+                            </Frame>
+
+                            <VerticalStackLayout Grid.Column="1" VerticalOptions="Center" Spacing="2">
+
+                                <HorizontalStackLayout Spacing="4">
+                                    <Label Text="{Binding FirstName}" 
+                                           FontAttributes="Bold" 
+                                           TextColor="#111827" 
+                                           FontSize="16"/>
+                                    <Label Text="{Binding LastName}" 
+                                           FontAttributes="Bold" 
+                                           TextColor="#111827" 
+                                           FontSize="16"/>
+                                </HorizontalStackLayout>
+
+                                <Label Text="{Binding Phone, StringFormat='📞 {0}'}" TextColor="#4F46E5" FontSize="13" FontAttributes="Bold"/>
+                                <Label Text="{Binding Email, StringFormat='✉️ {0}'}" TextColor="#6B7280" FontSize="12"/>
+                            </VerticalStackLayout>
+                        </Grid>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+    </Grid>
+</ContentPage>
+    

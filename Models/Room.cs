@@ -18,7 +18,7 @@ namespace PensiuneaLotus.Models
         public decimal PricePerNight { get; set; }
 
 
-        public bool IsActive { get; set; } = true;
+        public bool IsOccupied { get; set; } = false;
 
         // Navigation
         public ICollection<Reservation>? Reservations { get; set; }
