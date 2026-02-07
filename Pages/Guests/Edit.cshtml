@@ -1,0 +1,52 @@
+﻿@page
+@model PensiuneaLotus.Pages.Guests.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Guest</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Guest.ID" />
+            <div class="form-group">
+<span class="text-danger">*</span>
+                <label asp-for="Guest.FirstName" class="control-label"></label>
+                <input asp-for="Guest.FirstName" class="form-control" aria-required="true"/>
+                <span asp-validation-for="Guest.FirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+<span class="text-danger">*</span>
+                <label asp-for="Guest.LastName" class="control-label"></label>
+                <input asp-for="Guest.LastName" class="form-control" aria-required="true"/>
+                <span asp-validation-for="Guest.LastName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Guest.Phone" class="control-label"></label>
+                <input asp-for="Guest.Phone" class="form-control" />
+                <span asp-validation-for="Guest.Phone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Guest.Email" class="control-label"></label>
+                <input asp-for="Guest.Email" class="form-control" />
+                <span asp-validation-for="Guest.Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="./Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

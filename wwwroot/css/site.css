@@ -1,22 +1,131 @@
-html {
-  font-size: 14px;
-}
-
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-html {
-  position: relative;
-  min-height: 100%;
-}
-
+/* 1. Setari Generale - Fundal Gri Deschis */
 body {
-  margin-bottom: 60px;
+    background-color: #F2F4F8;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #1F2937;
+    margin: 0;
+    padding-bottom: 60px;
+}
+
+/* 2. Bara de Navigare - Indigo */
+.navbar {
+    background-color: #4F46E5 !important;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-brand, .nav-link {
+    color: white !important;
+    font-weight: 600;
+}
+
+    .nav-link:hover {
+        color: #E0E7FF !important; /* Indigo foarte deschis la hover */
+    }
+
+/* 3. Carduri (Containere albe) */
+.container-box {
+    background-color: white;
+    border-radius: 12px;
+    padding: 30px;
+    margin-top: 30px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    border: 1px solid #E5E7EB;
+}
+
+/* 4. Titluri */
+h1, h2, h3 {
+    color: #1F2937;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+h1 {
+    font-size: 2rem;
+    color: #4F46E5; /* Titlurile principale cu Indigo */
+}
+
+/* 5. Tabele Moderne */
+.table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 10px; /* Spatiu intre randuri */
+}
+
+    .table thead th {
+        background-color: transparent;
+        border-bottom: 2px solid #E5E7EB;
+        color: #6B7280;
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        padding: 15px;
+    }
+
+    .table tbody tr {
+        background-color: white;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        transition: transform 0.2s;
+    }
+
+        .table tbody tr:hover {
+            transform: translateY(-2px); /* Efect de ridicare la hover */
+        }
+
+    .table td {
+        padding: 15px;
+        vertical-align: middle;
+        border-top: none;
+    }
+
+    /* Rotunjire colturi pentru randurile tabelului */
+    .table tbody tr td:first-child {
+        border-top-left-radius: 8px;
+        border-bottom-left-radius: 8px;
+    }
+
+    .table tbody tr td:last-child {
+        border-top-right-radius: 8px;
+        border-bottom-right-radius: 8px;
+    }
+
+/* 6. Butoane */
+.btn {
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-weight: 600;
+    transition: all 0.3s;
+    border: none;
+}
+
+.btn-primary {
+    background-color: #4F46E5;
+    color: white;
+}
+
+    .btn-primary:hover {
+        background-color: #4338CA; /* Un pic mai inchis la hover */
+        transform: translateY(-1px);
+    }
+
+.btn-secondary {
+    background-color: #E5E7EB;
+    color: #1F2937;
+}
+
+.btn-danger {
+    background-color: #EF4444;
+    color: white;
+}
+
+/* 7. Footer */
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    white-space: nowrap;
+    line-height: 60px;
+    background-color: white;
+    border-top: 1px solid #E5E7EB;
+    color: #6B7280;
+    text-align: center;
 }

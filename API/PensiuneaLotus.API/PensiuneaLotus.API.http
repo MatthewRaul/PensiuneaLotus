@@ -1,0 +1,6 @@
+@PensiuneaLotus.API_HostAddress = http://localhost:5143
+
+GET {{PensiuneaLotus.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

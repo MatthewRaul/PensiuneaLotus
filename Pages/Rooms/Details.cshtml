@@ -1,0 +1,43 @@
+﻿@page
+@model PensiuneaLotus.Pages.Rooms.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Room</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Room.Number)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Room.Number)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Room.Capacity)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Room.Capacity)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Room.PricePerNight)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Room.PricePerNight)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Room.IsOccupied)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Room.IsOccupied)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-page="./Edit" asp-route-id="@Model.Room.ID">Edit</a> |
+    <a asp-page="./Index">Back to List</a>
+</div>

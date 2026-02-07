@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="PensiuneaLotus.Client.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:PensiuneaLotus.Client"
+    xmlns:pages="clr-namespace:PensiuneaLotus.Client.Pages"
+    
+    Title="Pensiunea Lotus"
+    
+    Shell.BackgroundColor="#4F46E5"
+    Shell.TitleColor="White"
+
+    Shell.TabBarBackgroundColor="White"
+    Shell.TabBarForegroundColor="#4F46E5"
+    Shell.TabBarUnselectedColor="#9CA3AF"
+    Shell.TabBarTitleColor="#9CA3AF"
+
+    FlyoutBehavior="Disabled">
+
+    <TabBar>
+        <Tab Title="Status Camere" Icon="home.png">
+            <ShellContent ContentTemplate="{DataTemplate pages:RoomsPage}" Route="RoomsPage" />
+        </Tab>
+
+        <Tab Title="Oaspeti" Icon="user.png">
+            <ShellContent ContentTemplate="{DataTemplate pages:GuestsPage}" Route="GuestsPage" />
+        </Tab>
+
+        <Tab Title="Rezervare Noua" Icon="plus.png">
+            <ShellContent ContentTemplate="{DataTemplate pages:CreateReservationPage}" Route="CreateReservationPage" />
+        </Tab>
+    </TabBar>
+
+</Shell>

@@ -6,4 +6,39 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="API\**" />
+    <Compile Remove="MAUI\**" />
+    <Content Remove="API\**" />
+    <Content Remove="MAUI\**" />
+    <EmbeddedResource Remove="API\**" />
+    <EmbeddedResource Remove="MAUI\**" />
+    <None Remove="API\**" />
+    <None Remove="MAUI\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.22" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="8.0.22" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.22" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.22" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.22">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.22" />
+  </ItemGroup>
+	<ItemGroup>
+		<Compile Remove="PensiuneaLotus.Api\**\*.cs" />
+		<Content Remove="PensiuneaLotus.Api\**" />
+		<None Remove="PensiuneaLotus.Api\**" />
+	</ItemGroup>
+	<ItemGroup>
+		<Compile Remove="PensiuneaLotus.Client\**" />
+		<EmbeddedResource Remove="PensiuneaLotus.Client\**" />
+		<None Remove="PensiuneaLotus.Client\**" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Compile Remove="Guest.cs" />
+	</ItemGroup>
 </Project>

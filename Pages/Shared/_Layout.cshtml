@@ -1,44 +1,71 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="ro">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - PensiuneaLotus</title>
+    <title>@ViewData["Title"] - Admin Pensiunea Lotus</title>
+
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/PensiuneaLotus.styles.css" asp-append-version="true" />
 </head>
 <body>
+
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-lg navbar-dark box-shadow mb-3" style="background-color: #4F46E5 !important;">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-page="/Index">PensiuneaLotus</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
+                <a class="navbar-brand fw-bold" asp-area="" asp-page="/Index">Pensiunea Lotus</a>
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarLotus"
+                        aria-controls="navbarLotus" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
+
+                <div class="collapse navbar-collapse" id="navbarLotus">
+
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
+                            <a class="nav-link text-white" asp-area="" asp-page="/Index">Acasă</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
+                            <a class="nav-link text-white" asp-area="" asp-page="/Rooms/Index">Camere</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" asp-area="" asp-page="/Guests/Index">Oaspeți</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" asp-area="" asp-page="/Reservations/Index">Rezervări</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" asp-area="" asp-page="/Payments/Index">Plăți</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" asp-area="" asp-page="/Services/Index">Servicii</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" asp-area="" asp-page="/ReservationServices/Index">Serv. Rezervări</a>
                         </li>
                     </ul>
+
+                    <div class="d-flex">
+                        <partial name="_LoginPartial" />
+                    </div>
                 </div>
             </div>
         </nav>
     </header>
+
     <div class="container">
         <main role="main" class="pb-3">
-            @RenderBody()
+            <div class="container-box">
+                @RenderBody()
+            </div>
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2026 - PensiuneaLotus - <a asp-area="" asp-page="/Privacy">Privacy</a>
+    <footer class="footer text-muted" style="background-color: white;">
+        <div class="container text-center">
+            &copy; 2026 - Pensiunea Lotus Admin - <a asp-area="" asp-page="/Privacy">Confidențialitate</a>
         </div>
     </footer>
 
